@@ -26,10 +26,17 @@ export const useCart = () => useContext(CartContext)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    getItemsFromLocalStorage(setItems)
+    getItemsFromLocalStorage(setItems, setMounted)
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("cart", JSON.stringify(items))
+    }
+  }, [items, mounted])
 
   const { addItem, removeItem, updateItemQuantity } = cartLocalStorage(setItems)
 
@@ -75,7 +82,7 @@ function cartLocalStorage(setItems: React.Dispatch<React.SetStateAction<CartItem
   return { addItem, removeItem, updateItemQuantity }
 }
 
-function getItemsFromLocalStorage(setItems: React.Dispatch<React.SetStateAction<CartItem[]>>) {
+function getItemsFromLocalStorage(setItems: React.Dispatch<React.SetStateAction<CartItem[]>>, setMounted: React.Dispatch<React.SetStateAction<boolean>>) {
   const storedCart = localStorage.getItem("cart")
   if (storedCart) {
     try {
@@ -85,5 +92,6 @@ function getItemsFromLocalStorage(setItems: React.Dispatch<React.SetStateAction<
       localStorage.removeItem("cart")
     }
   }
+  setMounted(true)
 }
 
