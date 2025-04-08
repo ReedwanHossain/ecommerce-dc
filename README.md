@@ -142,13 +142,20 @@ A modern e-commerce product gallery application built with Next.js and TypeScrip
    git clone https://github.com/yourusername/ecommerce-product-gallery.git
    cd ecommerce-product-gallery
 
+2. Create .env.local from .env.example:
+
+```bash
+  touch .env.local
+  cp .env.example .env.local
+
+
    ```
-2. Install Dependencies 
+3. Install Dependencies 
    ```bash
    npm install or npm install --legacy-peer-deps
    ``` 
 
-3. Run application 
+4. Run application 
    ```bash
    npm run dev
    ```
